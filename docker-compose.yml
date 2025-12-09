@@ -1,0 +1,11 @@
+services:
+    privilix:
+        build: .
+        container_name: privilix
+        restart: unless-stopped
+        volumes:
+            - ./data:/app/data
+        env_file:
+            - .env
+        environment:
+            - BOT_ENV=production

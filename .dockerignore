@@ -1,0 +1,35 @@
+.git
+.gitignore
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Editor junk
+.vscode/
+.idea/
+
+# Local OS trash
+.DS_Store
+Thumbs.db
+
+# Virtual envs
+.venv/
+env/
+venv/
+
+# Python build artifacts
+build/
+dist/
+*.egg-info/
+
+# Docker files don’t need themselves copied
+Dockerfile
+docker-compose.yml
+
+# Cache + logs
+*.log
+.cache/
+
+README.md
