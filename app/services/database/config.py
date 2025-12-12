@@ -1,5 +1,10 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+
 TORTOISE_ORM = {
-    "connections": {"default": f"sqlite://data/database.db"},
+    "connections": {"default": os.getenv('DB_URL')},
     "apps": {
         "models": {
             "models": [

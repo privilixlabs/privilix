@@ -50,6 +50,19 @@ class Error(commands.Cog):
             await ctx.reply(embed=embed, mention_author=False)
             return
 
+        if isinstance(error, commands.CommandNotFound):
+            raw = error.args[0]
+            start = raw.find('"') + 1
+            end = raw.rfind('"')
+            unknown = raw[start:end] if start > 0 and end > start else raw
+
+            embed = error_embed(
+                f"There's no command named `{unknown}`",
+                title=f"{CROSS} Command Not Found",
+            )
+            await ctx.reply(embed=embed, mention_author=False)
+            return
+
         raise error
 
 

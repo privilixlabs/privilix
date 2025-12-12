@@ -14,32 +14,8 @@ class Management(commands.Cog):
         self.bot = bot
 
     @commands.command(
-        name="clear", help="Remove several messages instantly in this channel."
+        name="nickname", aliases=["nick"], help="Set nickname for a user."
     )
-    @commands.guild_only()
-    @commands.has_permissions(manage_messages=True)
-    async def _clear(self, ctx, count: int):
-        if not ctx.guild.me.guild_permissions.manage_messages:
-            await ctx.reply(embed=error_embed("Missing permission to manage messages."))
-            return
-
-        if not 1 <= count <= 50:
-            await ctx.reply(
-                embed=error_embed(
-                    "You can only remove between 1 and 50 messages at a time."
-                )
-            )
-            return
-
-        try:
-            deleted = await ctx.channel.purge(limit=count)
-            embed = success_embed(f"Deleted {len(deleted)} messages.")
-            await ctx.send(embed=embed)
-        except Exception as e:
-            await ctx.reply(embed=error_embed("Something went wrong."))
-            logger.error(f"Purge command failed: {e}")
-
-    @commands.command(name="setnick", help="Set nickname for a user.")
     @commands.guild_only()
     @commands.has_permissions(manage_nicknames=True)
     async def _setnick(
@@ -94,7 +70,9 @@ class Management(commands.Cog):
         view = Modlogs(modlogs, member)
         await ctx.reply(embed=view.get_embed(), view=view)
 
-    @commands.command(name="slowmode", help="Set a slowmode for a channel.")
+    @commands.command(
+        name="slowmode", aliases=["sm"], help="Set a slowmode for a channel."
+    )
     @commands.guild_only()
     @commands.has_permissions(manage_channels=True)
     async def _slowmode(
@@ -131,6 +109,134 @@ class Management(commands.Cog):
             embed=success_embed(
                 f"The slowmode of the channel {channel.mention} has been set to {seconds} seconds"
             )
+        )
+
+    @commands.command(name="addrole", aliases=["ar"], help="Add a role to a user")
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    async def _addrole(
+        self,
+        ctx: commands.Context,
+        target: discord.Member,
+        role: discord.Role,
+        *,
+        reason: str = "No reason provided",
+    ):
+        if not ctx.guild.me.guild_permissions.manage_roles:
+            await ctx.reply(
+                embed=error_embed("Missing permission to manage roles."),
+                mention_author=False,
+            )
+            return
+
+        if role.position >= ctx.guild.me.top_role.position:
+            await ctx.reply(
+                embed=error_embed("That role is higher than my highest role."),
+                mention_author=False,
+            )
+            return
+
+        if (
+            target.top_role >= ctx.author.top_role
+            and ctx.author.id != ctx.guild.owner_id
+        ):
+            await ctx.reply(
+                embed=error_embed("You can’t modify roles for this member."),
+                mention_author=False,
+            )
+            return
+
+        if (
+            role.position >= ctx.author.top_role.position
+            and ctx.author.id != ctx.guild.owner_id
+        ):
+            await ctx.reply(
+                embed=error_embed("You can’t assign a role higher than your own."),
+                mention_author=False,
+            )
+            return
+
+        if role in target.roles:
+            await ctx.reply(
+                embed=error_embed(f"{target.mention} already has that role."),
+                mention_author=False,
+            )
+            return
+
+        try:
+            await target.add_roles(role, reason=f"{ctx.author}: {reason}")
+        except Exception as e:
+            logger.error(f"Addrole command failed: {e}")
+            await ctx.reply(
+                embed=error_embed("Something went wrong."),
+                mention_author=False,
+            )
+            return
+
+        await ctx.reply(
+            embed=success_embed(f"Added **{role.name}** to {target.mention}."),
+            mention_author=False,
+        )
+
+    @commands.command(name="removerole", aliases=["rr"], help="Remove a role from a user")
+    @commands.guild_only()
+    @commands.has_permissions(manage_roles=True)
+    async def _removerole(
+        self,
+        ctx: commands.Context,
+        target: discord.Member,
+        role: discord.Role,
+        *,
+        reason: str = "No reason provided",
+    ):
+        if not ctx.guild.me.guild_permissions.manage_roles:
+            await ctx.reply(
+                embed=error_embed("Missing permission to manage roles."),
+                mention_author=False,
+            )
+            return
+    
+        if role.position >= ctx.guild.me.top_role.position:
+            await ctx.reply(
+                embed=error_embed("That role is higher than my highest role."),
+                mention_author=False,
+            )
+            return
+    
+        if target.top_role >= ctx.author.top_role and ctx.author.id != ctx.guild.owner_id:
+            await ctx.reply(
+                embed=error_embed("You can’t modify roles for this member."),
+                mention_author=False,
+            )
+            return
+    
+        if role.position >= ctx.author.top_role.position and ctx.author.id != ctx.guild.owner_id:
+            await ctx.reply(
+                embed=error_embed("You can’t remove a role higher than your own."),
+                mention_author=False,
+            )
+            return
+    
+        if role not in target.roles:
+            await ctx.reply(
+                embed=error_embed(f"{target.mention} doesn’t have that role."),
+                mention_author=False,
+            )
+            return
+    
+        try:
+            await target.remove_roles(role, reason=f"{ctx.author}: {reason}")
+        except Exception as e:
+            logger.error(f"Removerole command failed: {e}")
+            await ctx.reply(
+                embed=error_embed("Something went wrong."),
+                mention_author=False,
+            )
+            return
+    
+        await ctx.reply(
+            embed=success_embed(f"Removed **{role.name}** from {target.mention}."),
+            mention_author=False,
         )
 
 

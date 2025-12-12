@@ -27,6 +27,7 @@ class Misc(commands.Cog):
     @commands.command(name="help", help="Get a list of all my commands.")
     @commands.guild_only()
     async def help_command(self, ctx, command: str = None):
+        prefix = await fetch_prefix(ctx.guild.id)
         if command:
             cmd = self.bot.get_command(command)
             if not cmd:
@@ -38,6 +39,11 @@ class Misc(commands.Cog):
                 value=f"> {cmd.help}" or "No description.",
                 inline=False,
             )
+            aliases = []
+            for alias in cmd.aliases:
+              aliases.append(f"{prefix}{alias}")
+            others = f"> `{", ".join(aliases)}`"
+            embed.add_field(name = "Aliases", value = others)
             params = []
             for name, param in cmd.clean_params.items():
                 if param.default is param.empty:
@@ -48,7 +54,6 @@ class Misc(commands.Cog):
             usage = f"> `.{command} {' '.join(params)}`"
             embed.add_field(name="Usage", value=usage)
             return await ctx.reply(embed=embed)
-        prefix = await fetch_prefix(ctx.guild.id)
         view = HelpView(self.bot, prefix)
         embed = discord.Embed(
             title="📚 Help Menu",

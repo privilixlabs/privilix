@@ -18,7 +18,7 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="kick", help="Kick a user.")
+    @commands.command(name="kick", aliases=["k"], help="Kick a user.")
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)
     async def _kick(
@@ -73,7 +73,7 @@ class Moderation(commands.Cog):
             embed=embed,
         )
 
-    @commands.command(name="ban", help="Ban a user.")
+    @commands.command(name="ban", aliases=["b"], help="Ban a user.")
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def _ban(
@@ -138,7 +138,7 @@ class Moderation(commands.Cog):
             embed=embed,
         )
 
-    @commands.command(name="unban", help="Unban a user.")
+    @commands.command(name="unban", aliases=["ub"], help="Unban a user.")
     @commands.guild_only()
     @commands.has_permissions(ban_members=True)
     async def _unban(
@@ -197,7 +197,7 @@ class Moderation(commands.Cog):
             embed=embed,
         )
 
-    @commands.command(name="timeout", help="Timeout a member.")
+    @commands.command(name="timeout", aliases=["tm", "mute"], help="Timeout a member.")
     @commands.guild_only()
     @commands.has_permissions(moderate_members=True)
     async def _timeout(
@@ -268,7 +268,7 @@ class Moderation(commands.Cog):
             embed=embed,
         )
 
-    @commands.command(name="warn", help="Warn a user.")
+    @commands.command(name="warn", aliases=["w"], help="Warn a user.")
     @commands.has_permissions(manage_messages=True)
     @commands.guild_only()
     async def _warn(
@@ -291,7 +291,9 @@ class Moderation(commands.Cog):
             return
 
         try:
-            case_id = await insert_modlog(ctx.guild.id, target.id, ctx.author.id, "warn", reason)
+            case_id = await insert_modlog(
+                ctx.guild.id, target.id, ctx.author.id, "warn", reason
+            )
             view = AppealDMView(self.bot, ctx.guild.id, case_id, "warn")
         except Exception as e:
             await ctx.reply(
@@ -304,7 +306,8 @@ class Moderation(commands.Cog):
         try:
             try:
                 await target.send(
-                    embed=dm_embed(ctx.guild, "You were warned", "warn", reason), view = view
+                    embed=dm_embed(ctx.guild, "You were warned", "warn", reason),
+                    view=view,
                 )
             except Exception as e:
                 logger.error(f"warn dm failed {e}")
@@ -413,6 +416,34 @@ class Moderation(commands.Cog):
                 embed=error_embed("Something went wrong."),
             )
             return
+
+    @commands.command(
+        name="purge",
+        aliases=["clear", "clr"],
+        help="Delete several messages instantly in this channel.",
+    )
+    @commands.guild_only()
+    @commands.has_permissions(manage_messages=True)
+    async def _clear(self, ctx, count: int):
+        if not ctx.guild.me.guild_permissions.manage_messages:
+            await ctx.reply(embed=error_embed("Missing permission to manage messages."))
+            return
+
+        if not 1 <= count <= 50:
+            await ctx.reply(
+                embed=error_embed(
+                    "You can only remove between 1 and 50 messages at a time."
+                )
+            )
+            return
+
+        try:
+            deleted = await ctx.channel.purge(limit=count)
+            embed = success_embed(f"Deleted {len(deleted)} messages.")
+            await ctx.send(embed=embed)
+        except Exception as e:
+            await ctx.reply(embed=error_embed("Something went wrong."))
+            logger.error(f"Purge command failed: {e}")
 
 
 async def setup(bot):

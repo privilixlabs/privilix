@@ -4,11 +4,12 @@ from app.core.constants.emojis import HAMMER, BOX, STAR, SHIELD, GEAR
 from app.core.constants.colors import BLUE
 
 EMOJIS = {
-    "Moderation": SHIELD,
-    "Misc": BOX,
-    "General": STAR,
-    "Management": HAMMER,
-    "Admin": GEAR,
+    "Moderation": "🛡️",
+    "Misc": "📦",
+    "General": "⭐",
+    "Management": "🔨",
+    "Admin": "⚙️",
+    "Fun": "🎭"
 }
 
 DESCRIPTIONS = {
@@ -17,6 +18,7 @@ DESCRIPTIONS = {
     "General": "Commands for everyday utility.",
     "Management": "Server management and utilities.",
     "Admin": "Commands for managing server settings and high-level controls.",
+    "Fun": "Commands for fun."
 }
 
 
@@ -50,7 +52,7 @@ class HelpSelect(ui.Select):
             discord.SelectOption(
                 label="Home",
                 description="Return to the main help menu.",
-                emoji="<:privHome:1441730065158111273>",
+                emoji="🏠",
             )
         ]
 

@@ -5,12 +5,46 @@ RUN_IN_TRANSACTION = True
 
 async def upgrade(db: BaseDBAsyncClient) -> str:
     return """
-        ALTER TABLE "mod_logs" ADD "resolved" INT NOT NULL DEFAULT 0;"""
+        CREATE TABLE IF NOT EXISTS "guild" (
+    "guild_id" VARCHAR(32) NOT NULL PRIMARY KEY,
+    "name" VARCHAR(200) NOT NULL,
+    "joined_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE IF NOT EXISTS "guild_settings" (
+    "prefix" VARCHAR(5) NOT NULL DEFAULT '.',
+    "language" VARCHAR(10) NOT NULL DEFAULT 'en',
+    "modlog_channelid" VARCHAR(32),
+    "suggestion_channelid" VARCHAR(32),
+    "appeal_channelid" VARCHAR(32),
+    "guild_id" VARCHAR(32) NOT NULL PRIMARY KEY REFERENCES "guild" ("guild_id") ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "mod_logs" (
+    "case_id" SERIAL NOT NULL PRIMARY KEY,
+    "target_id" VARCHAR(32) NOT NULL,
+    "mod_id" VARCHAR(32) NOT NULL,
+    "action" VARCHAR(20) NOT NULL,
+    "reason" TEXT NOT NULL,
+    "timestamp" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "resolved" BOOL NOT NULL DEFAULT False,
+    "guild_id" VARCHAR(32) NOT NULL REFERENCES "guild" ("guild_id") ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "feature_settings" (
+    "suggestions" BOOL NOT NULL DEFAULT False,
+    "modlogs" BOOL NOT NULL DEFAULT False,
+    "appeals" BOOL NOT NULL DEFAULT False,
+    "guild_id" VARCHAR(32) NOT NULL PRIMARY KEY REFERENCES "guild" ("guild_id") ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS "aerich" (
+    "id" SERIAL NOT NULL PRIMARY KEY,
+    "version" VARCHAR(255) NOT NULL,
+    "app" VARCHAR(100) NOT NULL,
+    "content" JSONB NOT NULL
+);"""
 
 
 async def downgrade(db: BaseDBAsyncClient) -> str:
     return """
-        ALTER TABLE "mod_logs" DROP COLUMN "resolved";"""
+        """
 
 
 MODELS_STATE = (
