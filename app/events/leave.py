@@ -24,6 +24,8 @@ class Leave(commands.Cog):
         )
         try:
             await delete_guild_data(guild.id)
+            self.bot.prefix_cache.pop(guild.id,None)
+            self.bot.guild_settings_cache.pop(guild.id, None)
             await channel.send(embed=embed)
         except Exception as e:
             logger.error(f"Error in guild join log {e}")
