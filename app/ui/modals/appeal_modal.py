@@ -1,6 +1,5 @@
 import discord
 from discord import ui, TextStyle
-from app.services.database.queries import get_appeal_channel
 from app.ui.embeds import error_embed, success_embed
 from app.core.constants.colors import BLUE
 from app.core.constants.emojis import HAMMER
@@ -45,7 +44,7 @@ class Appeal(ui.Modal, title="Appeal Action"):
         self.add_item(self.resolve_reason)
 
     async def on_submit(self, interaction: discord.Interaction):
-        channelid = await get_appeal_channel(self.guild_id)
+        channelid = self.bot.guild_settings_cache[self.guild_id]["appeals_channelid"]
         if not channelid:
             await interaction.response.send_message(
                 embed=error_embed("This server has no appeals channel"), ephemeral=True

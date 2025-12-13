@@ -5,11 +5,7 @@ from app.helpers.logging import logger
 from app.services.moderation.checks import check_target
 from app.ui.embeds import error_embed, success_embed, dm_embed, log_embed, lock_embed
 from app.core.constants.emojis import CHECK
-from app.services.database.queries import (
-    insert_modlog,
-    get_modlog_channel,
-    get_appeal_channel,
-)
+from app.services.database.queries import insert_modlog
 from app.helpers.time_parser import time_parser
 from app.ui.views.appealDmView import AppealDMView
 
@@ -60,7 +56,7 @@ class Moderation(commands.Cog):
                 logger.error(f"DM for kick command failed: {e}")
                 embed.add_field(name="Notice", value="The user did not receive a DM.")
 
-            log_id = await get_modlog_channel(ctx.guild.id)
+            log_id = self.bot.guild_settings_cache[ctx.guild.id]["modlogs_channelid"]
             if log_id:
                 log_channel = await ctx.guild.fetch_channel(int(log_id))
                 await log_channel.send(
@@ -107,7 +103,7 @@ class Moderation(commands.Cog):
         embed = success_embed(f"**{target.name} banned.**")
 
         try:
-            log_id = await get_modlog_channel(ctx.guild.id)
+            log_id = self.bot.guild_settings_cache[ctx.guild.id]["modlogs_channelid"]
             if log_id:
                 log_channel = await ctx.guild.fetch_channel(int(log_id))
                 await log_channel.send(
@@ -118,7 +114,9 @@ class Moderation(commands.Cog):
                 ctx.guild.id, target.id, ctx.author.id, "ban", reason
             )
             try:
-                chnl_id = await get_appeal_channel(ctx.guild.id)
+                chnl_id = self.bot.guild_settings_cache[ctx.guild.id][
+                    "appeals_channelid"
+                ]
                 appeal_view = None
                 if chnl_id:
                     appeal_view = AppealDMView(self.bot, ctx.guild.id, case_id, "ban")
@@ -183,7 +181,7 @@ class Moderation(commands.Cog):
                 logger.error(f"Unban dm failed {e}")
                 embed.add_field(name="Notice", value="The user did not receive a DM.")
 
-            log_id = await get_modlog_channel(ctx.guild.id)
+            log_id = self.bot.guild_settings_cache[ctx.guild.id]["modlogs_channelid"]
             if log_id:
                 log_channel = await ctx.guild.fetch_channel(int(log_id))
                 await log_channel.send(
@@ -255,7 +253,7 @@ class Moderation(commands.Cog):
             await insert_modlog(
                 ctx.guild.id, target.id, ctx.author.id, "timeout", reason
             )
-            log_id = await get_modlog_channel(ctx.guild.id)
+            log_id = self.bot.guild_settings_cache[ctx.guild.id]["modlogs_channelid"]
             if log_id:
                 log_channel = await ctx.guild.fetch_channel(int(log_id))
                 lembed = log_embed(target, ctx.author, "timeout", reason)
@@ -294,7 +292,10 @@ class Moderation(commands.Cog):
             case_id = await insert_modlog(
                 ctx.guild.id, target.id, ctx.author.id, "warn", reason
             )
-            view = AppealDMView(self.bot, ctx.guild.id, case_id, "warn")
+            chnl_id = self.bot.guild_settings_cache[ctx.guild.id]["appeals_channelid"]
+            appeal_view = None
+            if chnl_id:
+                appeal_view = AppealDMView(self.bot, ctx.guild.id, case_id, "ban")
         except Exception as e:
             await ctx.reply(
                 embed=error_embed("Something went wrong."),
@@ -312,7 +313,7 @@ class Moderation(commands.Cog):
             except Exception as e:
                 logger.error(f"warn dm failed {e}")
                 embed.add_field(name="Notice", value="The user did not receive a DM.")
-            log_id = await get_modlog_channel(ctx.guild.id)
+            log_id = self.bot.guild_settings_cache[ctx.guild.id]["modlogs_channelid"]
             if log_id:
                 log_channel = await ctx.guild.fetch_channel(int(log_id))
                 await log_channel.send(

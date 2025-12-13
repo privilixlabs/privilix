@@ -24,6 +24,8 @@ class Join(commands.Cog):
         )
         try:
             await get_or_create_guild(str(guild.id), name)
+            self.bot.prefix_cache[guild.id] = "."
+            self.bot.guild_settings_cache[guild.id]["language"] = "en"
             await channel.send(embed=embed)
         except Exception as e:
             logger.error(f"Error in guild join log {e}")

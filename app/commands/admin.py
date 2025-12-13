@@ -25,6 +25,7 @@ class Admin(commands.Cog):
             return
         try:
             await set_prefix(ctx.guild.id, prefix)
+            self.bot.prefix_cache[ctx.guild.id] = prefix
             await ctx.reply(
                 embed=success_embed(f"Prefix changed to `{prefix}`"),
                 mention_author=False,
@@ -41,6 +42,9 @@ class Admin(commands.Cog):
 
         try:
             await set_modlog_channel(ctx.guild.id, channel.id)
+            self.bot.guild_settings_cache[ctx.guild.id]["modlogs_channelid"] = (
+                channel.id
+            )
             await ctx.reply(
                 embed=success_embed(f"Modlogs channel set to {channel.mention}"),
                 mention_author=False,
@@ -55,11 +59,12 @@ class Admin(commands.Cog):
     )
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
-    async def _setsuggestionchan(self, ctx, channel: discord.TextChannel):
+    async def _setsuggestionchan(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
 
         try:
             await set_suggestion_channel(ctx.guild.id, channel.id)
+            self.bot.guild_settings_cache[ctx.guild.id]["suggestions_channelid"] = channel.id
             await ctx.reply(
                 embed=success_embed(f"Suggestions channel set to {channel.mention}"),
                 mention_author=False,
@@ -79,6 +84,7 @@ class Admin(commands.Cog):
         channel = channel or ctx.channel
         try:
             await set_appeal_channel(ctx.guild.id, channel.id)
+            self.bot.guild_settings_cache[ctx.guild.id]["suggestion_channelid"] = channel.id
             await ctx.reply(
                 embed=success_embed(
                     f"Appeal submissions channel set to {channel.mention}"

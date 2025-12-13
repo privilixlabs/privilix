@@ -7,7 +7,6 @@ from datetime import datetime
 from app.core.constants.emojis import LOGO
 from app.core.constants.colors import BLUE
 from app.ui.views.helpView import HelpView
-from app.services.database.queries import fetch_prefix
 
 
 class Misc(commands.Cog):
@@ -27,7 +26,7 @@ class Misc(commands.Cog):
     @commands.hybrid_command(name="help", help="Get a list of all my commands.")
     @commands.guild_only()
     async def help_command(self, ctx, command: str = None):
-        prefix = await fetch_prefix(ctx.guild.id)
+        prefix = self.bot.prefix_cache[ctx.guild.id]
         if command:
             cmd = self.bot.get_command(command)
             if not cmd:

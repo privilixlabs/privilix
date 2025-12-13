@@ -23,10 +23,6 @@ async def delete_guild_data(guild_id: int) -> None:
     await Guild.filter(guild_id=str(guild_id)).delete()
 
 
-async def fetch_prefix(guild_id: int) -> str:
-    settings = await GuildSettings.get(guild_id=str(guild_id))
-    return settings.prefix
-
 
 async def set_prefix(guild_id: int, new_prefix: str) -> None:
     settings = await GuildSettings.get(guild_id=str(guild_id))
@@ -50,20 +46,12 @@ async def insert_modlog(
     return case_id
 
 
-async def get_modlog_channel(guild_id: int) -> int:
-    settings = await GuildSettings.get(guild_id=str(guild_id))
-    return settings.modlog_channelid
-
 
 async def set_modlog_channel(guild_id: int, channel_id: int) -> None:
     settings = await GuildSettings.get(guild_id=str(guild_id))
     settings.modlog_channelid = str(channel_id)
     await settings.save()
 
-
-async def get_suggestion_channel(guild_id: int) -> int:
-    settings = await GuildSettings.get(guild_id=str(guild_id))
-    return settings.suggestion_channelid
 
 
 async def set_suggestion_channel(guild_id: int, channel_id: int) -> None:
@@ -122,11 +110,6 @@ async def fetch_warnings(guild_id: int, user_id: int) -> list:
             }
         )
     return results
-
-
-async def get_appeal_channel(guild_id: int):
-    settings = await GuildSettings.get(guild_id=str(guild_id))
-    return settings.appeal_channelid
 
 
 async def set_appeal_channel(guild_id: int, channel_id: int):

@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 from app.helpers.logging import logger
-from app.services.database.queries import get_suggestion_channel
 from app.ui.embeds import error_embed, success_embed
 from app.core.constants.colors import BLUE
 from app.core.constants.emojis import CHECK, CROSS, NEUTRAL
@@ -106,7 +105,7 @@ class General(commands.Cog):
     @commands.command(name="suggest", help="Give a suggestion for this server.")
     @commands.guild_only()
     async def _suggest(self, ctx, *, suggestion: str):
-        suggestion_id = await get_suggestion_channel(ctx.guild.id)
+        suggestion_id = self.bot.guild_settings_cache[ctx.guild.id]["suggestion_channelid"]
 
         if not suggestion_id:
             await ctx.reply(

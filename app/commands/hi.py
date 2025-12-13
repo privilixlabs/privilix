@@ -31,28 +31,5 @@ class Hi(commands.Cog):
 
         await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(name="invite", description="Get an invite link for Privilix.")
-    @app_commands.guild_only()
-    async def _inviteslash(self, interaction: discord.Interaction):
-        view = ui.View()
-        link_btn = ui.Button(
-            label="Invite",
-            style=discord.ButtonStyle.link,
-            url="https://discord.com/oauth2/authorize?client_id=1133741199505760266&permissions=8&integration_type=0&scope=bot",
-        )
-        view.add_item(link_btn)
-        embed = discord.Embed(
-            color=BLUE,
-            title="Thanks for your interest in Privilix!",
-            description="> Click the button to invite the bot to your server!",
-        )
-        embed.set_thumbnail(url=self.bot.user.display_avatar.url)
-        embed.set_footer(
-            text=f"Requested by {interaction.user.name} | {datetime.now().strftime('Today at %H:%M')}",
-            icon_url=interaction.user.display_avatar.url,
-        )
-        
-        await interaction.response.send_message(embed = embed, view = view)
-
 async def setup(bot):
     await bot.add_cog(Hi(bot))
