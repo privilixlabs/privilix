@@ -9,7 +9,6 @@ EMOJIS = {
     "General": "⭐",
     "Management": "🔨",
     "Admin": "⚙️",
-    "Fun": "🎭"
 }
 
 DESCRIPTIONS = {
@@ -18,7 +17,6 @@ DESCRIPTIONS = {
     "General": "Commands for everyday utility.",
     "Management": "Server management and utilities.",
     "Admin": "Commands for managing server settings and high-level controls.",
-    "Fun": "Commands for fun."
 }
 
 
@@ -65,7 +63,7 @@ class HelpSelect(ui.Select):
                 "load",
                 "hi",
                 "owner",
-                "topgg"
+                "topgg",
             ]:
                 continue
 
@@ -114,4 +112,6 @@ class HelpSelect(ui.Select):
                     inline=False,
                 )
 
-        await interaction.response.edit_message(embed=embed, view=HelpView(self.bot, self.prefix))
+        await interaction.response.edit_message(
+            embed=embed, view=HelpView(self.bot, self.prefix)
+        )
