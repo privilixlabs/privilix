@@ -84,7 +84,7 @@ class Admin(commands.Cog):
         channel = channel or ctx.channel
         try:
             await set_appeal_channel(ctx.guild.id, channel.id)
-            self.bot.guild_settings_cache[ctx.guild.id]["suggestion_channelid"] = channel.id
+            self.bot.guild_settings_cache[ctx.guild.id]["appeals_channelid"] = channel.id
             await ctx.reply(
                 embed=success_embed(
                     f"Appeal submissions channel set to {channel.mention}"

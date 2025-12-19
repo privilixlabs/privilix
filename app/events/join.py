@@ -16,11 +16,17 @@ class Join(commands.Cog):
         name = guild.name
         member_count = guild.member_count
         joined_at = datetime.utcnow().strftime("%d %b %Y • %I:%M %p UTC")
-
+        invite = "https://discord.com"
+        try:
+            invites = await guild.invites()
+            if invites:
+                invite = invites[0].url
+        except Exception:
+            pass
         embed = discord.Embed(
             color=BLUE,
             title="New Server Joined",
-            description=f"> **Name:** {name}\n> **Member Count:** {member_count}\n> **Joined At:** {joined_at}",
+            description=f"> **Name:** {name}\n> **Member Count:** {member_count}\n> **Joined At:** {joined_at}\n> **Invite link:** {invite}",
         )
         try:
             await get_or_create_guild(str(guild.id), name)

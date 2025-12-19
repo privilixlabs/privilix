@@ -3,10 +3,11 @@ from discord.ext import commands
 
 from app.ui.embeds import error_embed, success_embed
 from app.core.constants.colors import BLUE
-from app.core.constants.emojis import HAMMER, CROSS
+from app.core.constants.emojis import HAMMER, CROSS, LOGO
 from app.helpers.logging import logger
 from app.ui.views.warningView import WarningViewer
 from app.ui.views.modlogView import Modlogs
+from  app.ui.views.setup import Setup
 from app.services.database.queries import fetch_modlogs, fetch_warnings, mod_stats
 from app.helpers.time_converter import time_converter
 
@@ -18,6 +19,20 @@ import asyncio
 class Management(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command(
+        name="setup", help="A quick and easy setup to configure all my features."
+    )
+    @commands.guild_only()
+    @commands.has_permissions(administrator=True)
+    async def setup(self, ctx: commands.Context):
+        embed = discord.Embed(
+            color=BLUE,
+            title=f"{LOGO} Thank you for choosing Privilix",
+            description="> Click the button below to get started.",
+        )
+
+        await ctx.reply(embed=embed, view = Setup(self.bot))
 
     @commands.command(
         name="nickname", aliases=["nick"], help="Set nickname for a user."
@@ -338,7 +353,7 @@ class Management(commands.Cog):
 
         await ctx.reply(
             embed=success_embed(
-                f"The role {role.mention} has been {"added to" if action == "add" else "removed from"} {success}/{success + failed} members"
+                f"The role {role.mention} has been {'added to' if action == 'add' else 'removed from'} {success}/{success + failed} members"
             )
         )
 
