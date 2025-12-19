@@ -11,17 +11,6 @@ class Leave(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_remove(self, guild):
-        channel = self.bot.get_channel(1441177924224159856)
-
-        name = guild.name
-        member_count = guild.member_count
-        joined_at = datetime.utcnow().strftime("%d %b %Y • %I:%M %p UTC")
-
-        embed = discord.Embed(
-            color=BLUE,
-            title="New Server Left",
-            description=f"> **Name:** {name}\n> **Member Count:** {member_count}\n> **Joined At:** {joined_at}",
-        )
         try:
             await delete_guild_data(guild.id)
             self.bot.prefix_cache.pop(guild.id,None)

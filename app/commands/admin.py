@@ -14,7 +14,7 @@ class Admin(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name="setprefix", help="Change bot prefix for server.")
+    @commands.command(name="prefix", help="Change bot prefix for server.")
     @commands.guild_only()
     @commands.has_permissions(manage_guild=True)
     async def _set_prefix(self, ctx, *, prefix: str):

@@ -26,7 +26,7 @@ async def delete_guild_data(guild_id: int) -> None:
 
 
 async def set_prefix(guild_id: int, new_prefix: str) -> None:
-    settings = await GuildSettings.get(guild_id=str(guild_id))
+    settings, _= await GuildSettings.get(guild_id=str(guild_id))
     settings.prefix = new_prefix
     await settings.save()
 

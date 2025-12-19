@@ -7,12 +7,14 @@ from app.services.database.queries import (
     set_appeal_channel,
 )
 
+from datetime import datetime
+
+
 class Setup(ui.View):
-  
     def __init__(self, bot):
-      self.bot = bot
-      super().__init__(timeout = 300)
-  
+        self.bot = bot
+        super().__init__(timeout=300)
+
     @ui.button(label="Start Setup", style=discord.ButtonStyle.green, emoji="🚀")
     async def start_btn(self, interaction: discord.Interaction, button: ui.Button):
         self.clear_items()
@@ -27,7 +29,7 @@ class Setup(ui.View):
 
 
 class ModlogSelect(ui.ChannelSelect):
-    def __init__(self,bot):
+    def __init__(self, bot):
         self.bot = bot
         super().__init__(
             placeholder="Select a mod logs channel",
@@ -42,8 +44,8 @@ class ModlogSelect(ui.ChannelSelect):
 
         await set_modlog_channel(interaction.guild.id, channel.id)
         self.bot.guild_settings_cache[interaction.guild.id]["modlogs_channelid"] = (
-                channel.id
-            )
+            channel.id
+        )
 
         embed = interaction.message.embeds[0]
         setup = Setup(self.bot)
@@ -55,11 +57,13 @@ class ModlogSelect(ui.ChannelSelect):
             color=BLUE,
         )
 
-        await interaction.followup.edit_message(message_id =interaction.message.id ,embed=embed, view=setup)
+        await interaction.followup.edit_message(
+            message_id=interaction.message.id, embed=embed, view=setup
+        )
 
 
 class AppealSelect(ui.ChannelSelect):
-    def __init__(self,bot):
+    def __init__(self, bot):
         self.bot = bot
         super().__init__(
             placeholder="Select an appeals channel",
@@ -74,8 +78,8 @@ class AppealSelect(ui.ChannelSelect):
 
         await set_appeal_channel(interaction.guild.id, channel.id)
         self.bot.guild_settings_cache[interaction.guild.id]["appeals_channelid"] = (
-                channel.id
-            )
+            channel.id
+        )
 
         embed = interaction.message.embeds[0]
         embed = discord.Embed(
@@ -83,12 +87,18 @@ class AppealSelect(ui.ChannelSelect):
             title="Quick Setup Completed",
             description=f"{interaction.user.mention} completed the quick setup",
         )
-        modlog_channel = interaction.guild.get_channel(self.bot.guild_settings_cache[interaction.guild.id]['modlogs_channelid'])
-        appeal_channel = interaction.guild.get_channel(self.bot.guild_settings_cache[interaction.guild.id]['appeals_channelid'])
+        modlog_channel = interaction.guild.get_channel(
+            self.bot.guild_settings_cache[interaction.guild.id]["modlogs_channelid"]
+        )
+        appeal_channel = interaction.guild.get_channel(
+            self.bot.guild_settings_cache[interaction.guild.id]["appeals_channelid"]
+        )
         embed.add_field(
             name="Setup information",
             value=f"> **Mod Logs channel**: {modlog_channel.mention}\n> **Appeals channel**: {appeal_channel.mention}",
         )
-        embed.set_footer(text = datetime.now().strftime('Today at %H:%M'))
+        embed.set_footer(text=datetime.now().strftime("Today at %H:%M"))
 
-        await interaction.followup.edit_message(message_id = interaction.message.id, embed=embed, view=None)
+        await interaction.followup.edit_message(
+            message_id=interaction.message.id, embed=embed, view=None
+        )

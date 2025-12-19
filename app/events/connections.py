@@ -16,6 +16,9 @@ class Connection(commands.Cog):
         await self.bot.change_presence(
             activity=discord.Activity(type=discord.ActivityType.watching, name="/help • privilix.xyz")
         )
+        # commands = await self.bot.tree.fetch_commands()
+        # for cmd in commands:
+        #   print(cmd.name, cmd.id)
         logger.info(f"Logged in as {self.bot.user}")
 
     @commands.Cog.listener()

@@ -1,9 +1,12 @@
 import discord
 from discord.ext import commands
+
 from datetime import datetime
+
 from app.services.database.queries import get_or_create_guild
 from app.helpers.logging import logger
 from app.core.constants.colors import BLUE
+from app.ui.views.setup import Setup
 
 
 class Join(commands.Cog):
@@ -12,24 +15,31 @@ class Join(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        channel = self.bot.get_channel(1441167455040049384)
-        name = guild.name
-        member_count = guild.member_count
-        joined_at = datetime.utcnow().strftime("%d %b %Y • %I:%M %p UTC")
-        invite = "https://discord.com"
+        chan = guild.system_channel
+        if not chan or not chan.permissions_for(guild.me).send_messages:
+            chan = next(
+                (
+                    c
+                    for c in guild.text_channels
+                    if c.permissions_for(guild.me).send_messages
+                ),
+                None,
+            )
+        if chan:
+            embed = discord.Embed(
+                color=BLUE,
+                description="## 👋 Welcome to Privilix!\nYou are only a few steps away from getting started.",
+            )
+            embed.add_field(
+                name="Quick Setup",
+                value="Click the button below to start a quick setup",
+            )
+            embed.add_field(
+                name="More Info", value="Use </help:1449369826303676438> for more info"
+            )
+            await chan.send(embed=embed, view=Setup(self.bot))
         try:
-            invites = await guild.invites()
-            if invites:
-                invite = invites[0].url
-        except Exception:
-            pass
-        embed = discord.Embed(
-            color=BLUE,
-            title="New Server Joined",
-            description=f"> **Name:** {name}\n> **Member Count:** {member_count}\n> **Joined At:** {joined_at}\n> **Invite link:** {invite}",
-        )
-        try:
-            await get_or_create_guild(str(guild.id), name)
+            await get_or_create_guild(str(guild.id), guild.name)
             self.bot.prefix_cache[guild.id] = "."
             self.bot.guild_settings_cache[guild.id] = {
                 "language": "en",
@@ -37,7 +47,6 @@ class Join(commands.Cog):
                 "suggestion_channelid": None,
                 "appeals_channelid": None,
             }
-            await channel.send(embed=embed)
         except Exception as e:
             logger.error(f"Error in guild join log {e}")
 
