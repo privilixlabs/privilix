@@ -63,7 +63,6 @@ class HelpSelect(ui.Select):
                 "error",
                 "load",
                 "hi",
-                "owner",
                 "topgg",
                 "mention",
             ]:
