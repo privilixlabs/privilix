@@ -21,8 +21,6 @@ class Misc(commands.Cog):
         ws_latency = round(self.bot.latency * 1000)
         embed = discord.Embed(color=BLUE)
         embed.add_field(name="Bot latency", value=f"{ws_latency}ms")
-        now = datetime.now().strftime("Today at %H:%M")
-        embed.set_footer(text=f"Privilix | {now}")
         await ctx.reply(embed=embed)
 
     @commands.hybrid_command(name="help", help="Get a list of all my commands.")
@@ -81,8 +79,6 @@ class Misc(commands.Cog):
             title="Vote for Privilix",
             description="> Your vote helps us grow. Tap the button below and vote to make your support count.",
         )
-        now = datetime.now().strftime("Today at %H:%M")
-        embed.set_footer(text=now)
 
         await ctx.reply(embed=embed, view=view)
 
@@ -106,7 +102,6 @@ class Misc(commands.Cog):
             color=BLUE,
             description=f"## {LOGO} Hi, I'm {self.bot.user}\n-# Less stress. More community.",
         )
-        now = datetime.now().strftime("Today at %H:%M")
         embed.add_field(
             name="Bot statistics",
             value=f"**Server Count:** {len(self.bot.guilds)}\n**User Count:** {len(self.bot.users)}",
@@ -115,7 +110,6 @@ class Misc(commands.Cog):
             name="Links",
             value="[Invite](https://discord.com/oauth2/authorize?client_id=1133741199505760266&permissions=8&integration_type=0&scope=bot)\n[Website](https://privilix.xyz)\n[Support](https://discord.gg/K6EDkaVERk)",
         )
-        embed.set_footer(text=now)
         await ctx.reply(embed=embed, view=view)
 
     @commands.command(name="invite", help="Get an invite link for Privilix.")
@@ -135,7 +129,7 @@ class Misc(commands.Cog):
         )
         embed.set_thumbnail(url=self.bot.user.display_avatar.url)
         embed.set_footer(
-            text=f"Requested by {ctx.author.name} | {datetime.now().strftime('Today at %H:%M')}",
+            text=f"Requested by {ctx.author.name}",
             icon_url=ctx.author.display_avatar.url,
         )
 
@@ -154,7 +148,7 @@ class Misc(commands.Cog):
             color=BLUE, title=f"Feedback from {ctx.author}", description=f"> {message}"
         )
         embed.set_footer(
-            text=f"Sent from {ctx.guild.name} | {datetime.now().strftime('Today at %H:%M')}"
+            text=f"Sent from {ctx.guild.name} "
         )
         await channel.send(embed=embed)
         await ctx.reply(embed=success_embed("Your feedback has been submitted!!"))
