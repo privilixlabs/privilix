@@ -15,7 +15,7 @@ EMOJIS = {
 DESCRIPTIONS = {
     "Moderation": "Commands for managing members and server behavior.",
     "Misc": "Commands that don’t belong to any specific category.",
-    "General": "Commands for everyday utility.",
+    "General": "Commands for basic utility.",
     "Management": "Server management and utilities.",
     "Admin": "Commands for managing server settings and high-level controls.",
 }
