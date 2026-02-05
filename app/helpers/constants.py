@@ -1,3 +1,10 @@
+RED = 0xD21404
+GREEN = 0x028A0F
+YELLOW = 0xFFBF00
+ORANGE = 0xE24C00
+BLUE = 0x2563EB
+
+
 CHECK = "<:privSuccess:1418795093514518660>"
 CROSS = "<:privError:1418795156802633748>"
 INFO = "<:privInfo:1441530721435910277>"
@@ -13,3 +20,6 @@ CLIPBOARD = "<:privClipboard:1441907656410533989>"
 SHIELD = "<:privShield:1441727637247754272>"
 
 LOGO = "<:privilix_white:1451509247329435658>"
+
+
+INVITE_LINK = "https://discord.com/oauth2/authorize?client_id=1133741199505760266&permissions=470215935&integration_type=0&scope=bot+applications.commands"

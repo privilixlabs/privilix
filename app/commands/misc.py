@@ -43,10 +43,10 @@ class Misc(commands.Cog):
             aliases = []
             aliases.append(f"{prefix}{command}")
             for alias in cmd.aliases:
-              aliases.append(f"{prefix}{alias}")
+                aliases.append(f"{prefix}{alias}")
             if aliases:
-              others = f"> `{", ".join(aliases)}`"
-              embed.add_field(name = "Aliases", value = others)
+                others = f"> `{', '.join(aliases)}`"
+                embed.add_field(name="Aliases", value=others)
             params = []
             for name, param in cmd.clean_params.items():
                 if param.default is param.empty:
@@ -141,19 +141,23 @@ class Misc(commands.Cog):
 
         await ctx.reply(embed=embed, view=view)
 
-    @commands.command(name = "feedback", aliases = ["review"], help = "Give a feedback/review to help us improve Privilix")
+    @commands.command(
+        name="feedback",
+        aliases=["review"],
+        help="Give a feedback/review to help us improve Privilix",
+    )
     @commands.guild_only()
-    async def _feedback(self, ctx: commands.Context, *,message:str):
-      channel = await self.bot.fetch_channel(1450187362662354964)
-      
-      embed = discord.Embed(
-        color = BLUE,
-        title = f"Feedback from {ctx.author}",
-        description = f"> {message}"
+    async def _feedback(self, ctx: commands.Context, *, message: str):
+        channel = await self.bot.fetch_channel(1450187362662354964)
+
+        embed = discord.Embed(
+            color=BLUE, title=f"Feedback from {ctx.author}", description=f"> {message}"
         )
-      embed.set_footer(text = f"Sent from {ctx.guild.name} | {datetime.now().strftime("Today at %H:%M")}")
-      await channel.send(embed = embed)
-      await ctx.reply(embed = success_embed("Your feedback has been submitted!!"))
+        embed.set_footer(
+            text=f"Sent from {ctx.guild.name} | {datetime.now().strftime('Today at %H:%M')}"
+        )
+        await channel.send(embed=embed)
+        await ctx.reply(embed=success_embed("Your feedback has been submitted!!"))
 
 
 async def setup(bot):

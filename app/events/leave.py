@@ -5,6 +5,7 @@ from app.helpers.logging import logger
 from app.core.constants.colors import BLUE
 from app.services.database.queries import delete_guild_data
 
+
 class Leave(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -13,7 +14,7 @@ class Leave(commands.Cog):
     async def on_guild_remove(self, guild):
         try:
             await delete_guild_data(guild.id)
-            self.bot.prefix_cache.pop(guild.id,None)
+            self.bot.prefix_cache.pop(guild.id, None)
             self.bot.guild_settings_cache.pop(guild.id, None)
             await channel.send(embed=embed)
         except Exception as e:
@@ -21,4 +22,4 @@ class Leave(commands.Cog):
 
 
 async def setup(bot):
-  await bot.add_cog(Leave(bot))
+    await bot.add_cog(Leave(bot))

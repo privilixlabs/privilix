@@ -6,6 +6,7 @@ from app.ui.embeds import error_embed, success_embed
 from app.core.constants.colors import BLUE
 from app.core.constants.emojis import CHECK, CROSS, NEUTRAL
 
+
 class General(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -105,11 +106,13 @@ class General(commands.Cog):
     @commands.command(name="suggest", help="Give a suggestion for this server.")
     @commands.guild_only()
     async def _suggest(self, ctx, *, suggestion: str):
-        suggestion_id = self.bot.guild_settings_cache[ctx.guild.id]["suggestion_channelid"]
+        suggestion_id = self.bot.guild_settings_cache[ctx.guild.id][
+            "suggestion_channelid"
+        ]
 
         if not suggestion_id:
             await ctx.reply(
-                embed = error_embed(
+                embed=error_embed(
                     "This server hasn’t configured a suggestions channel yet."
                 ),
                 mention_author=False,
@@ -118,22 +121,23 @@ class General(commands.Cog):
 
         suggestion_channel = await ctx.guild.fetch_channel(int(suggestion_id))
         try:
-          suggester = discord.Embed(
-            color = BLUE,
-            title = f"Suggestion from @{ctx.author.name}",
-            description = f"> {suggestion}"
+            suggester = discord.Embed(
+                color=BLUE,
+                title=f"Suggestion from @{ctx.author.name}",
+                description=f"> {suggestion}",
             )
-          now = datetime.now().strftime("Today at %H:%M")
-          suggester.set_footer(text = now)
-          suggester.set_thumbnail(url = ctx.author.display_avatar.url)
-          msg = await suggestion_channel.send(embed = suggester, mention_author = False)
-          await msg.add_reaction(CHECK)
-          await msg.add_reaction(NEUTRAL)
-          await msg.add_reaction(CROSS)
-          await ctx.reply(embed = success_embed("Your suggestion has been submitted."))
+            now = datetime.now().strftime("Today at %H:%M")
+            suggester.set_footer(text=now)
+            suggester.set_thumbnail(url=ctx.author.display_avatar.url)
+            msg = await suggestion_channel.send(embed=suggester, mention_author=False)
+            await msg.add_reaction(CHECK)
+            await msg.add_reaction(NEUTRAL)
+            await msg.add_reaction(CROSS)
+            await ctx.reply(embed=success_embed("Your suggestion has been submitted."))
         except Exception as e:
-          await ctx.reply(embed = error_embed("Something went wrong."))
-          logger.error(f"Suggest command failed: {e}")
+            await ctx.reply(embed=error_embed("Something went wrong."))
+            logger.error(f"Suggest command failed: {e}")
+
 
 async def setup(bot):
     await bot.add_cog(General(bot))

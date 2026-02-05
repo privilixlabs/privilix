@@ -64,7 +64,9 @@ class Admin(commands.Cog):
 
         try:
             await set_suggestion_channel(ctx.guild.id, channel.id)
-            self.bot.guild_settings_cache[ctx.guild.id]["suggestions_channelid"] = channel.id
+            self.bot.guild_settings_cache[ctx.guild.id]["suggestions_channelid"] = (
+                channel.id
+            )
             await ctx.reply(
                 embed=success_embed(f"Suggestions channel set to {channel.mention}"),
                 mention_author=False,
@@ -84,7 +86,9 @@ class Admin(commands.Cog):
         channel = channel or ctx.channel
         try:
             await set_appeal_channel(ctx.guild.id, channel.id)
-            self.bot.guild_settings_cache[ctx.guild.id]["appeals_channelid"] = channel.id
+            self.bot.guild_settings_cache[ctx.guild.id]["appeals_channelid"] = (
+                channel.id
+            )
             await ctx.reply(
                 embed=success_embed(
                     f"Appeal submissions channel set to {channel.mention}"

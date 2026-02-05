@@ -1,1 +1,0 @@
-INVITE_LINK = "https://discord.com/oauth2/authorize?client_id=1133741199505760266&permissions=470215935&integration_type=0&scope=bot+applications.commands"

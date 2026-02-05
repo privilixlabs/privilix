@@ -11,7 +11,6 @@ class GuildSettings(models.Model):
     modlog_channelid = fields.CharField(max_length=32, null=True)
     suggestion_channelid = fields.CharField(max_length=32, null=True)
     appeal_channelid = fields.CharField(max_length=32, null=True)
-    
 
     class Meta:
         table = "guild_settings"

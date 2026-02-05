@@ -6,7 +6,8 @@ from typing import Optional
 
 
 async def check_target(
-    ctx: commands.Context, target: discord.Member) -> Optional[discord.Embed]:
+    ctx: commands.Context, target: discord.Member
+) -> Optional[discord.Embed]:
     guild = ctx.guild
     author = ctx.author
     bot_member = guild.me

@@ -3,6 +3,7 @@ from datetime import datetime
 from app.services.database.queries import delete_modlogs, edit_modlogs
 from app.core.constants.colors import BLUE
 
+
 class Modlogs(discord.ui.View):
     def __init__(self, modlogs, target: discord.Member):
         super().__init__(timeout=120)
@@ -29,8 +30,8 @@ class Modlogs(discord.ui.View):
         embed.add_field(name="Reason", value=log["reason"], inline=False)
 
         embed.add_field(name="Moderator", value=f"<@{log['moderator']}>", inline=True)
-        
-        embed.add_field(name="Resolved", value = "Yes" if log['resolved'] else "No")
+
+        embed.add_field(name="Resolved", value="Yes" if log["resolved"] else "No")
 
         embed.add_field(
             name="Issued", value=self.format_datetime(log["date"]), inline=True

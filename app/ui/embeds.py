@@ -26,7 +26,13 @@ def success_embed(message: str, title: Optional[str] = None) -> discord.Embed:
 def dm_embed(
     guild: discord.Guild, title: str, action: str, reason: str
 ) -> discord.Embed:
-    colors = {"ban": RED, "kick": RED, "warn": YELLOW, "timeout": ORANGE, "unban": GREEN}
+    colors = {
+        "ban": RED,
+        "kick": RED,
+        "warn": YELLOW,
+        "timeout": ORANGE,
+        "unban": GREEN,
+    }
     embed = discord.Embed(
         color=colors.get(action, RED),
         title=title,
@@ -51,7 +57,13 @@ def lock_embed(user: discord.Member, action: str) -> discord.Embed:
 def log_embed(
     target: discord.Member, mod: discord.Member, action: str, reason: str
 ) -> discord.Embed:
-    colors = {"ban": RED, "kick": RED, "warn": YELLOW, "timeout": ORANGE, "unban": GREEN}
+    colors = {
+        "ban": RED,
+        "kick": RED,
+        "warn": YELLOW,
+        "timeout": ORANGE,
+        "unban": GREEN,
+    }
     embed = discord.Embed(
         color=colors.get(action, YELLOW),
         title=action.capitalize(),

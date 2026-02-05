@@ -18,7 +18,7 @@ class TopGG(commands.Cog):
 
     async def post_stats(self):
         if not TOPGG_TOKEN:
-          return
+            return
         url = f"https://top.gg/api/bots/{BOT_ID}/stats"
         payload = {"server_count": len(self.bot.guilds)}
 

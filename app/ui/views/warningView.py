@@ -3,6 +3,7 @@ from app.services.database.queries import edit_modlogs, delete_modlogs
 from datetime import datetime
 from app.core.constants.colors import BLUE
 
+
 class WarningViewer(discord.ui.View):
     def __init__(self, warnings, target: discord.Member):
         super().__init__(timeout=120)
@@ -28,7 +29,7 @@ class WarningViewer(discord.ui.View):
 
         embed.add_field(name="Moderator", value=f"<@{warn['moderator']}>", inline=True)
 
-        embed.add_field(name="Resolved", value = "Yes" if warn['resolved'] else "No")
+        embed.add_field(name="Resolved", value="Yes" if warn["resolved"] else "No")
 
         embed.add_field(
             name="Issued", value=self.format_datetime(warn["date"]), inline=True
@@ -71,9 +72,9 @@ class WarningViewer(discord.ui.View):
 
             async def on_submit(self2, modal_interaction: discord.Interaction):
                 try:
-                  await edit_modlogs(warn_id, self2.new_reason.value)
+                    await edit_modlogs(warn_id, self2.new_reason.value)
                 except Exception as e:
-                  logger.error(e)
+                    logger.error(e)
                 self.warnings[self.index]["reason"] = self2.new_reason.value
 
                 await modal_interaction.response.edit_message(

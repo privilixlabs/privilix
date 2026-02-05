@@ -8,6 +8,7 @@ from app.services.database.config import TORTOISE_ORM
 async def init_db():
     await Tortoise.init(config=TORTOISE_ORM)
 
+
 TOKEN = config.bot_token
 
 bot = Privilix()

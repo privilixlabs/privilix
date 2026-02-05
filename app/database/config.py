@@ -10,7 +10,7 @@ TORTOISE_ORM = {
                 "app.services.database.models.guild_settings",
                 "app.services.database.models.mod_logs",
                 "app.services.database.models.feature_settings",
-                "aerich.models"
+                "aerich.models",
             ],
             "default_connection": "default",
         },

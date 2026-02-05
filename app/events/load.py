@@ -19,9 +19,7 @@ class Load(commands.Cog):
     @commands.Cog.listener()
     async def on_command_completion(self, ctx):
         try:
-            await ctx._loading_message.remove_reaction(
-                LOADER, self.bot.user
-            )
+            await ctx._loading_message.remove_reaction(LOADER, self.bot.user)
         except Exception as e:
             logger.error(f"Remove reaction on command completion failed: {e}")
 
