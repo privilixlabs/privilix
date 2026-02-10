@@ -32,7 +32,7 @@ Handle mistakes in one tap. Ban appeals, clean logs, simple controls, and zero c
 2.  **Install dependencies:**
 
     ```sh
-    poetry install
+    poetry install --no-root
     ```
 
 3.  **Set up environment variables:**
