@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
-from discord import ui
-
-from datetime import datetime
+from discord import guild, ui
 
 from app.helpers.constants import LOGO
 from app.helpers.constants import BLUE
@@ -17,7 +15,7 @@ class Misc(commands.Cog):
 
     @commands.command(name="ping", help="Check the bot's response time to Discord.")
     @commands.guild_only()
-    async def _ping(self, ctx):
+    async def _ping(self, ctx) -> None:
         ws_latency = round(self.bot.latency * 1000)
         embed = discord.Embed(color=BLUE)
         embed.add_field(name="Bot latency", value=f"{ws_latency}ms")
@@ -25,7 +23,7 @@ class Misc(commands.Cog):
 
     @commands.hybrid_command(name="help", help="Get a list of all my commands.")
     @commands.guild_only()
-    async def help_command(self, ctx, command: str = None):
+    async def help_command(self, ctx, command: str | None = None) -> None:
         prefix = self.bot.prefix_cache[ctx.guild.id]
         if command:
             cmd = self.bot.get_command(command)
@@ -66,7 +64,7 @@ class Misc(commands.Cog):
 
     @commands.command(name="vote", help="Vote for Priviliix.")
     @commands.guild_only()
-    async def _vote(self, ctx):
+    async def _vote(self, ctx) -> None:
         view = discord.ui.View()
         link_btn = discord.ui.Button(
             label="Vote",
@@ -84,7 +82,7 @@ class Misc(commands.Cog):
 
     @commands.command(name="info", help="Learn more about Privilix Bot.")
     @commands.guild_only()
-    async def _info(self, ctx):
+    async def _info(self, ctx) -> None:
         view = ui.View()
         link_btn = ui.Button(
             label="Invite",
@@ -114,7 +112,7 @@ class Misc(commands.Cog):
 
     @commands.command(name="invite", help="Get an invite link for Privilix.")
     @commands.guild_only()
-    async def _invite(self, ctx: commands.Context):
+    async def _invite(self, ctx: commands.Context) -> None:
         view = ui.View()
         link_btn = ui.Button(
             label="Invite",
@@ -141,13 +139,14 @@ class Misc(commands.Cog):
         help="Give a feedback/review to help us improve Privilix",
     )
     @commands.guild_only()
-    async def _feedback(self, ctx: commands.Context, *, message: str):
+    async def _feedback(self, ctx: commands.Context, *, message: str) -> None:
         channel = await self.bot.fetch_channel(1450187362662354964)
-
+        guild = ctx.guild
+        assert guild is not None
         embed = discord.Embed(
             color=BLUE, title=f"Feedback from {ctx.author}", description=f"> {message}"
         )
-        embed.set_footer(text=f"Sent from {ctx.guild.name} ")
+        embed.set_footer(text=f"Sent from {guild.name} ")
         await channel.send(embed=embed)
         await ctx.reply(embed=success_embed("Your feedback has been submitted!!"))
 
