@@ -2,18 +2,16 @@ from __future__ import annotations
 import discord
 from discord.ext import commands
 from app.ui.embeds import error_embed
-from typing import Optional
 
 
 async def check_target(
     ctx: commands.Context, target: discord.Member
-) -> Optional[discord.Embed]:
+) -> discord.Embed | None:
     guild = ctx.guild
+    assert guild is not None
     author = ctx.author
     bot_member = guild.me
-
-    if not isinstance(target, discord.Member):
-        return error_embed("This member isn’t available.")
+    assert isinstance(author, discord.Member)
 
     if target.id == ctx.bot.user.id:
         return error_embed("This action isn’t supported.")
