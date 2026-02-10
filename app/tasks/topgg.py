@@ -13,7 +13,7 @@ class TopGG(commands.Cog):
         self.bot = bot
         self.update_topgg.start()
 
-    def cog_unload(self):
+    async def cog_unload(self):
         self.update_topgg.cancel()
 
     async def post_stats(self):
