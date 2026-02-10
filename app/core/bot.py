@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from app.helpers.logging import logger
-from app.services.database.models.guild_settings import GuildSettings
+from app.database.models.guild_settings import GuildSettings
 
 
 class Privilix(commands.Bot):

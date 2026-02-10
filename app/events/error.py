@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 from app.helpers.logging import logger
 from app.ui.embeds import error_embed
-from app.core.constants.emojis import CROSS, LOADER
+from app.helpers.constants import CROSS, LOADER
 
 
 class Error(commands.Cog):

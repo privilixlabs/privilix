@@ -2,8 +2,8 @@ import discord
 from discord.ext import commands
 from datetime import datetime
 from app.helpers.logging import logger
-from app.core.constants.colors import BLUE
-from app.services.database.queries import delete_guild_data
+from app.helpers.constants import BLUE
+from app.database.queries import delete_guild_data
 
 
 class Leave(commands.Cog):

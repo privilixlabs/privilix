@@ -3,9 +3,9 @@ from discord.ext import commands
 
 from datetime import datetime
 
-from app.services.database.queries import get_or_create_guild
+from app.database.queries import get_or_create_guild
 from app.helpers.logging import logger
-from app.core.constants.colors import BLUE
+from app.helpers.constants import BLUE
 from app.ui.views.setup import Setup
 
 

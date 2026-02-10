@@ -4,11 +4,11 @@ from discord import ui
 
 from datetime import datetime
 
-from app.core.constants.emojis import LOGO
-from app.core.constants.colors import BLUE
+from app.helpers.constants import LOGO
+from app.helpers.constants import BLUE
 from app.ui.views.helpView import HelpView
 from app.ui.embeds import success_embed
-from app.core.constants.others import INVITE_LINK
+from app.helpers.constants import INVITE_LINK
 
 
 class Misc(commands.Cog):

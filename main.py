@@ -2,7 +2,7 @@ import asyncio
 from app.core.bot import Privilix
 from app.core.config import config
 from tortoise import Tortoise
-from app.services.database.config import TORTOISE_ORM
+from app.database.config import TORTOISE_ORM
 
 
 async def init_db():

@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from app.helpers.logging import logger
-from app.core.constants.emojis import LOADER
+from app.helpers.constants import LOADER
 
 
 class Load(commands.Cog):

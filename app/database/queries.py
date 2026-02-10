@@ -1,7 +1,7 @@
-from app.services.database.models.guild import Guild
-from app.services.database.models.guild_settings import GuildSettings
-from app.services.database.models.mod_logs import ModLogs
-from app.services.database.models.feature_settings import FeatureSettings
+from app.database.models.guild import Guild
+from app.database.models.guild_settings import GuildSettings
+from app.database.models.mod_logs import ModLogs
+from app.database.models.feature_settings import FeatureSettings
 
 from collections import Counter
 
