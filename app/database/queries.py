@@ -112,19 +112,19 @@ async def fetch_warnings(guild_id: int, user_id: int) -> list:
     return results
 
 
-async def set_appeal_channel(guild_id: int, channel_id: int):
+async def set_appeal_channel(guild_id: int, channel_id: int) -> None:
     settings = await GuildSettings.get(guild_id=str(guild_id))
     settings.appeal_channelid = str(channel_id)
     await settings.save()
 
 
-async def resolve_case(case_id: int):
+async def resolve_case(case_id: int) -> None:
     logs = await ModLogs.get(case_id=case_id)
     logs.resolved = True
     await logs.save()
 
 
-async def mod_stats(guild_id: int, mod_id: int):
+async def mod_stats(guild_id: int, mod_id: int) -> dict:
     logs = await ModLogs.filter(guild_id=str(guild_id), mod_id=str(mod_id)).values(
         "action"
     )
