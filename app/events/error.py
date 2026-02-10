@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 from app.helpers.logging import logger
 from app.ui.embeds import error_embed

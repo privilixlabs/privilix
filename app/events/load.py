@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 from app.helpers.logging import logger
 from app.helpers.constants import LOADER

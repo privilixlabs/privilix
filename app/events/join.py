@@ -1,8 +1,6 @@
 import discord
 from discord.ext import commands
 
-from datetime import datetime
-
 from app.database.queries import get_or_create_guild
 from app.helpers.logging import logger
 from app.helpers.constants import BLUE
@@ -39,7 +37,7 @@ class Join(commands.Cog):
             )
             await chan.send(embed=embed, view=Setup(self.bot))
         try:
-            await get_or_create_guild(str(guild.id), guild.name)
+            await get_or_create_guild(guild.id, guild.name)
             self.bot.prefix_cache[guild.id] = "."
             self.bot.guild_settings_cache[guild.id] = {
                 "language": "en",
