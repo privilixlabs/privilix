@@ -14,7 +14,7 @@ class Privilix(commands.Bot):
         allowed_mentions = discord.AllowedMentions(replied_user=False)
 
         super().__init__(
-            command_prefix=self.get_prefix,
+            command_prefix=get_prefix,
             intents=intents,
             help_command=None,
             allowed_mentions=allowed_mentions,
@@ -23,10 +23,6 @@ class Privilix(commands.Bot):
 
         self.prefix_cache: dict[int, str] = {}
         self.guild_settings_cache: dict[int, dict] = {}
-
-    async def get_prefix(self, message):
-        pref = self.prefix_cache.get(message.guild.id, ".")
-        return commands.when_mentioned_or(pref)(self, message)
 
     async def setup_hook(self):
         rows = await GuildSettings.all().prefetch_related("guild")
@@ -57,3 +53,9 @@ class Privilix(commands.Bot):
                         logger.info(f"Loaded extension : {path}")
                     except Exception as e:
                         logger.error(f"Failed to load {path} : {e}")
+
+
+async def get_prefix(bot: Privilix, message: discord.Message):
+    assert message.guild is not None
+    pref = bot.prefix_cache.get(message.guild.id, ".")
+    return commands.when_mentioned_or(pref)(bot, message)
