@@ -1,4 +1,3 @@
-from typing import Dict, Any
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -14,4 +13,4 @@ class Config(BaseSettings):
     )
 
 
-config = Config()
+config = Config() # pyright: ignore[reportCallIssue]
