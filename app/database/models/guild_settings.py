@@ -9,7 +9,6 @@ class GuildSettings(models.Model):
     prefix = fields.CharField(max_length=5, default=".")
     language = fields.CharField(max_length=10, default="en")
     modlog_channelid = fields.CharField(max_length=32, null=True)
-    suggestion_channelid = fields.CharField(max_length=32, null=True)
     appeal_channelid = fields.CharField(max_length=32, null=True)
 
     class Meta:
