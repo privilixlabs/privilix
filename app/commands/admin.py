@@ -54,29 +54,6 @@ class Admin(commands.Cog):
             logger.error(f"Set mod log failed: {e}")
             await ctx.reply(embed=error_embed("Something went wrong."))
 
-    @commands.command(
-        name="setsuggestions",
-        help="Set a channel to recieve suggestions from your members.",
-    )
-    @commands.guild_only()
-    @commands.has_permissions(manage_guild=True)
-    async def _setsuggestionchan(
-        self, ctx, channel: discord.TextChannel | None
-    ) -> None:
-        channel = channel or ctx.channel
-
-        try:
-            await set_suggestion_channel(ctx.guild.id, channel.id)
-            self.bot.guild_settings_cache[ctx.guild.id]["suggestions_channelid"] = (
-                channel.id
-            )
-            await ctx.reply(
-                embed=success_embed(f"Suggestions channel set to {channel.mention}"),
-                mention_author=False,
-            )
-        except Exception as e:
-            logger.error(f"Set mod log failed: {e}")
-            await ctx.reply(embed=error_embed("Something went wrong."))
 
     @commands.command(
         name="setappeals", help="Set a channel to receive appeal submissions."
