@@ -1,7 +1,6 @@
 from app.database.models.guild import Guild
 from app.database.models.guild_settings import GuildSettings
 from app.database.models.mod_logs import ModLogs
-from app.database.models.feature_settings import FeatureSettings
 
 from collections import Counter
 
@@ -12,7 +11,6 @@ async def get_or_create_guild(guild_id: int, name: str) -> Guild:
     )
 
     await GuildSettings.get_or_create(guild=guild)
-    await FeatureSettings.get_or_create(guild=guild)
 
     if guild.name != name:
         guild.name = name
